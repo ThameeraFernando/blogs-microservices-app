@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Post from "./Post";
+import axios from "axios";
 
 const PostList = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState({});
+
+  const fetchPosts = async () => {
+    try {
+      const res = await axios.get("http://localhost:4000/posts");
+      setPosts(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    setPosts([
-      {
-        id: "id-01",
-        title: "test title",
-        comments: [{ id: "id-01", content: "test comment" }],
-      },
-    ]);
+    fetchPosts();
   }, []);
 
   return (
     <div className="post-list">
-      {posts.map((post) => {
+      {Object.values(posts).map((post) => {
         return <Post key={post.id} post={post} />;
       })}
     </div>
