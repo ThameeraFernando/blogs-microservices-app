@@ -17,9 +17,25 @@ app.post("/events", (req, res) => {
       break;
     case "CommentAdded":
       const comments = posts[data.postId]?.comments;
-      comments.push({ id: data.commentId, content: data.content });
+      comments.push({
+        id: data.commentId,
+        content: data.content,
+        status: data.status,
+      });
       posts[data.postId].comments = comments;
-      console.log(posts);
+      break;
+    case "CommentUpdated":
+      const UpdatedComments = posts[data.postId]?.comments.filter(
+        (cmt) => cmt.id !== data.id
+      );
+      UpdatedComments.push({
+        id: data.id,
+        content: data.content,
+        status: data.status,
+      });
+
+      posts[data.postId].comments = UpdatedComments;
+
       break;
     default:
       break;
@@ -28,7 +44,6 @@ app.post("/events", (req, res) => {
 });
 
 app.get("/posts", (req, res) => {
-  console.log("here");
   res.send(posts);
 });
 
