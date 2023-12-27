@@ -14,7 +14,15 @@ const CommentList = ({ comments }) => {
       </p>
       <ul>
         {_comments.map((comment) => {
-          return <li key={comment.id}>{comment.content}</li>;
+          return (
+            <li key={comment.id}>
+              {comment.status === "approved"
+                ? comment.content
+                : comment.status === "pending"
+                ? "This comment need to be moderated"
+                : "This comments violated the community guidelines"}
+            </li>
+          );
         })}
       </ul>
     </>
